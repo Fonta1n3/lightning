@@ -90,8 +90,9 @@ start_nodes() {
 		network=$network
 		log-level=debug
 		log-file=/tmp/l$i-$network/log
-		addr=localhost:$socket
+		addr=0.0.0.0:$socket
 		allow-deprecated-apis=false
+		experimental-offers
 		EOF
 
 		# If we've configured to use developer, add dev options
@@ -115,7 +116,7 @@ start_nodes() {
 
 		# Start the lightning nodes
 		test -f "/tmp/l$i-$network/lightningd-$network.pid" || \
-			$EATMYDATA "$LIGHTNINGD" "--network=$network" "--lightning-dir=/tmp/l$i-$network" "--bitcoin-datadir=$PATH_TO_BITCOIN" "--database-upgrade=true" &
+			$EATMYDATA "$LIGHTNINGD" "--network=$network" "--lightning-dir=/tmp/l$i-$network" "--bitcoin-datadir=$PATH_TO_BITCOIN" &
 		# shellcheck disable=SC2139 disable=SC2086
 		alias l$i-cli="$LCLI --lightning-dir=/tmp/l$i-$network"
 		# shellcheck disable=SC2139 disable=SC2086
